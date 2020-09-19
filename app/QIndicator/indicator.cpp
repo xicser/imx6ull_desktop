@@ -52,5 +52,3 @@ void Indicator::indicatorControl(Indicator_t which, Status_t status)
     }
     close(fd);
 }
-
-

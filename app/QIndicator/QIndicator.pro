@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     indicator.cpp
 
 HEADERS  += mainwindow.h \
-    indicator.h
+    indicator.h \
+    config.h
 
 FORMS    += mainwindow.ui
 
