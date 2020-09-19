@@ -32,16 +32,27 @@ typedef struct {
     struct cdev cdev;                       //cdev
     struct class *class;                    //设备类
     struct device *device[INDICATOR_CNT];   //设备
-    u32 gpio_nr[INDICATOR_CNT];             //gpio句柄
+    s32 gpio_nr[INDICATOR_CNT];             //gpio句柄
     struct device_node *indi_nd;            //设备树节点
     dev_t devid;                            //设备号
     u16 major;                              //主设备号
-    u32 minor;                              //次设备号
 } indicator_dev_t;
 
 /* 定义indicator设备 */
 static indicator_dev_t indicator_dev;
 
+
+/* 驱动open函数 */
+static int indicator_open(struct inode *inode, struct file *filp)
+{
+	return 0;
+}
+
+/* 驱动release函数 */
+static int indicator_release(struct inode *inode, struct file *filp)
+{
+	return 0;
+}
 
 /* 驱动write函数 */
 static ssize_t indicator_write(struct file *filp, const char __user *buf,
@@ -51,10 +62,10 @@ static ssize_t indicator_write(struct file *filp, const char __user *buf,
     s32 failed_cnt;
     u8 data_buf;
 
-    printk("write, minor = %d\r\n", minor);
+    printk("write, minor = %d\n", minor);
     failed_cnt = copy_from_user(&data_buf, buf, count);
     if(failed_cnt != 0) {
-        printk("data copy failed!\r\n");
+        printk("data copy failed!\n");
         return -EIO;
     }
 
@@ -79,6 +90,8 @@ static ssize_t indicator_write(struct file *filp, const char __user *buf,
 /* file_operations */
 static const struct file_operations indicator_fops = {
    	.owner	= THIS_MODULE,
+    .open = indicator_open,
+    .release = indicator_release,
 	.write	= indicator_write,
 };
 
@@ -100,47 +113,46 @@ static int __init indicator_enter(void)
     //获取gpio句柄
     ret = of_get_named_gpio(indicator_dev.indi_nd, "led-gpios", 0);
     if (ret < 0) {
-        printk("failed to get named led-gpios\r\n");
+        printk("failed to get named led-gpios\n");
         goto fail_named_led_gpio;
     } else {
         indicator_dev.gpio_nr[PIN_LED] = ret;
-        printk("led gpio nr = %u\r\n", indicator_dev.gpio_nr[PIN_LED]);
+        printk("led gpio nr = %d\n", indicator_dev.gpio_nr[PIN_LED]);
     }
     ret = of_get_named_gpio(indicator_dev.indi_nd, "beep-gpios", 0);
     if (ret < 0) {
-        printk("failed to get named beep-gpios\r\n");
+        printk("failed to get named beep-gpios\n");
         goto fail_named_beep_gpio;
     } else {
         indicator_dev.gpio_nr[PIN_BEEP] = ret;
-        printk("beep gpio nr = %u\r\n", indicator_dev.gpio_nr[PIN_BEEP]);
+        printk("beep gpio nr = %d\n", indicator_dev.gpio_nr[PIN_BEEP]);
     }
 
     //申请gpio(检查该gpio是否冲突)
     ret = gpio_request(indicator_dev.gpio_nr[PIN_LED], "led");
     if (ret) {
-        printk("led pin request failed\r\n");
+        printk("led pin request failed\n");
         goto fail_led_pin_request;
     }
     ret =  gpio_request(indicator_dev.gpio_nr[PIN_BEEP], "beep");
     if (ret) {
-        printk("beep pin request failed\r\n");
+        printk("beep pin request failed\n");
         goto fail_beep_pin_request;
     }
 
-    //设置gpio
+    //设置gpio为输出
     ret = gpio_direction_output(indicator_dev.gpio_nr[PIN_LED], PIN_OFF);
     if (ret) {
-        printk("led pin set failed\r\n");
+        printk("led pin set failed\n");
         goto fail_led_pin_set;
     }
     ret = gpio_direction_output(indicator_dev.gpio_nr[PIN_BEEP], PIN_OFF);
     if (ret) {
-        printk("beep pin set failed\r\n");
+        printk("beep pin set failed\n");
         goto fail_beep_pin_set;
     }
 
-
-    //申请设备号
+    //申请设备号(在同一个主设备号下面申请2个次设备号)
     if (indicator_dev.major) {
         indicator_dev.devid = MKDEV(indicator_dev.major, 0);
         //"alpha_indicator"会出现在/proc/devices中
@@ -148,14 +160,14 @@ static int __init indicator_enter(void)
     } else {
         ret = alloc_chrdev_region(&indicator_dev.devid, 0, INDICATOR_CNT, "alpha_indicator");
         indicator_dev.major = MAJOR(indicator_dev.devid);
-        indicator_dev.minor = MINOR(indicator_dev.devid);
     }
     if (ret < 0) {
-        printk("indicator devid error\r\n");
+        printk("indicator devid error\n");
         goto fail_devid;
     }
     for (i = 0; i < INDICATOR_CNT; i++) {
-        printk("indicator(%d) major = %d, minor = %d\r\n", i + 1, indicator_dev.major, indicator_dev.minor + i);
+        printk("indicator(%d) major = %d, minor = %d\n", i + 1, 
+            MAJOR(indicator_dev.devid), MINOR(indicator_dev.devid) + i);
     }
 
     //注册字符设备
@@ -163,7 +175,7 @@ static int __init indicator_enter(void)
     cdev_init(&indicator_dev.cdev, &indicator_fops);
     ret = cdev_add(&indicator_dev.cdev, indicator_dev.devid, INDICATOR_CNT);
     if (ret < 0) {
-        printk("cdev add failed\r\n");
+        printk("cdev add failed\n");
         goto fail_cdev_add;
     }
 
@@ -181,7 +193,7 @@ static int __init indicator_enter(void)
         // 在/dev目录下会出现alpha_i%d设备节点
         indicator_dev.device[i] = device_create(indicator_dev.class, NULL,
                          indicator_dev.devid + i, NULL, "alpha_i%d", i);
-        //只要有一个失败, 直接退出
+        //记录出错设备的个数
         if (IS_ERR(indicator_dev.device[i])) {
             ret++;
         }
@@ -224,7 +236,7 @@ static void __exit indicator_exit(void)
 {
     u8 i;
 
-    printk("indicator exit\r\n");
+    printk("indicator exit\n");
 
     //关闭led
     gpio_set_value(indicator_dev.gpio_nr[PIN_LED], PIN_OFF);

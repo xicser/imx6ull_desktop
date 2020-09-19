@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2020-09-19T18:01:52
+# Project created by QtCreator 2020-09-19T20:56:16
 #
 #-------------------------------------------------
 
@@ -13,11 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        qindicatormainwindow.cpp
+        mainwindow.cpp \
+    indicator.cpp
 
-HEADERS  += qindicatormainwindow.h
+HEADERS  += mainwindow.h \
+    indicator.h
 
-FORMS    += qindicatormainwindow.ui
+FORMS    += mainwindow.ui
 
 RESOURCES += \
     resource.qrc
