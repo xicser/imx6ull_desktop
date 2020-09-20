@@ -15,8 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //new一个按键
     key = new Key();
-    key->keySignalInit(); //将该进程绑定到按键驱动的异步通知机制上
     connect(key, &Key::key_press_signal, this, &MainWindow::do_key_press_signal_slot); //绑定槽
+    key->start(); //启动线程
 
     //默认情况下, 先关闭
     Indicator::indicatorControl(INDICATOR_LED, INDICATOR_OFF);
@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    key->terminate();
     delete key;
     delete ui;
 }
@@ -247,5 +248,9 @@ void MainWindow::do_btn_exit_slot(void)
 /* 处理按键信号的槽 */
 void MainWindow::do_key_press_signal_slot(u8 key_value)
 {
-    qDebug() << key_value;
+    if (key_value) {
+        ui->radioButton->show();
+    } else {
+        ui->radioButton->hide();
+    }
 }
