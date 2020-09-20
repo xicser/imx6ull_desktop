@@ -1,5 +1,5 @@
 #include <QDebug>
-
+#include "config.h"
 #include "indicator.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -9,13 +9,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define u32   unsigned int
-#define u16   unsigned short
-#define u8    unsigned char
-#define s32   signed   int
-#define s16   signed   short
-#define s8    signed   char
 
 Indicator::Indicator()
 {

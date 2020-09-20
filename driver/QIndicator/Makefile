@@ -2,7 +2,7 @@ KERNELDIR := /home/wangxi/Xcode/kernel/imx6ull_kernel
 
 CURRENT_PATH := $(shell pwd)
 
-obj-m := indicator_drv.o
+obj-m := indicator_drv.o key_drv.o
 
 build: kernel_modules
 

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "indicator.h"
+#include "key.h"
 #include "config.h"
 #include <QDesktopWidget>
 #include <QDebug>
@@ -11,6 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {    
     ui->setupUi(this);
+
+    //new一个按键
+    key = new Key();
+    key->keySignalInit(); //将该进程绑定到按键驱动的异步通知机制上
+    connect(key, &Key::key_press_signal, this, &MainWindow::do_key_press_signal_slot); //绑定槽
 
     //默认情况下, 先关闭
     Indicator::indicatorControl(INDICATOR_LED, INDICATOR_OFF);
@@ -24,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete key;
     delete ui;
 }
 
@@ -205,6 +212,7 @@ void MainWindow::do_led_slot(int id)
         default: break;
     }
 }
+
 /* beep控制按钮槽函数 */
 void MainWindow::do_beep_slot(int id)
 {
@@ -234,4 +242,10 @@ void MainWindow::do_beep_slot(int id)
 void MainWindow::do_btn_exit_slot(void)
 {
     this->close();
+}
+
+/* 处理按键信号的槽 */
+void MainWindow::do_key_press_signal_slot(u8 key_value)
+{
+    qDebug() << key_value;
 }
