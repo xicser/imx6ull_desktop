@@ -22,6 +22,7 @@ private slots:
     void do_beep_slot(int);
     void do_led_timer_slot(void);
     void do_beep_timer_slot(void);
+    void do_btn_exit_slot(void);
 
 private:
     Ui::MainWindow *ui;
@@ -31,6 +32,7 @@ private:
 
     void mainWindowtInit(void);                      //主界面初始化
     void buttonInit(void);                           //按钮初始化
+    void labelInit(void);                            //标签初始化
     void timerInit(void);                            //定时器初始化
 };
 
