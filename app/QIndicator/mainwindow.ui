@@ -249,17 +249,17 @@
      </item>
     </layout>
    </widget>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QLabel" name="label_key_press">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>100</y>
-      <width>89</width>
-      <height>16</height>
+      <x>40</x>
+      <y>380</y>
+      <width>51</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>key_press</string>
     </property>
    </widget>
   </widget>

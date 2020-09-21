@@ -145,6 +145,11 @@ void MainWindow::labelInit(void)
     ui->label_led_indi->setText("");
     ui->label_beep_indi->setStyleSheet("QLabel {border-image: url(:/icon/Resource/icon/beep_off.png)}");
     ui->label_beep_indi->setText("");
+
+    //按键状态指示
+    ui->label_key_press->setStyleSheet("QLabel {border-image: url(:/icon/Resource/icon/key_btn.png)}");
+    ui->label_key_press->setText("");
+    ui->label_key_press->hide();
 }
 
 /* 定时器初始化 */
@@ -249,8 +254,8 @@ void MainWindow::do_btn_exit_slot(void)
 void MainWindow::do_key_press_signal_slot(u8 key_value)
 {
     if (key_value) {
-        ui->radioButton->show();
+        ui->label_key_press->show();
     } else {
-        ui->radioButton->hide();
+        ui->label_key_press->hide();
     }
 }

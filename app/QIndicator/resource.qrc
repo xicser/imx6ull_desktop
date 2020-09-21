@@ -11,5 +11,6 @@
         <file>Resource/icon/led_on.png</file>
         <file>Resource/icon/menu.png</file>
         <file>Resource/icon/menu_clicked.png</file>
+        <file>Resource/icon/key_btn.png</file>
     </qresource>
 </RCC>
