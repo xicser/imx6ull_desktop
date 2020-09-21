@@ -35,7 +35,6 @@ typedef struct {
     struct device_node *key_nd;        //设备树节点
     dev_t devid;                       //设备号
     u16 major;                         //主设备号
-    u32 minor;                         //次设备号
     s32 key_irq_nr;                    //key中断编号
     atomic_t is_valid;                 //key是否有效
 } key_dev_t;
@@ -88,9 +87,22 @@ static unsigned int key_poll(struct file *filp, struct poll_table_struct * wait)
     return mask;
 }
 
+/* 驱动open函数 */
+static int key_open(struct inode *inode, struct file *filp)
+{
+    return 0;
+}
+
+static int key_release(struct inode *inode, struct file *filp)
+{
+    return 0;
+}
+
 /* file_operations */
 static const struct file_operations key_fops = {
    	.owner = THIS_MODULE,
+    .open = key_open,
+    .release = key_release,
     .read = key_read,
     .poll = key_poll
 };
@@ -101,7 +113,7 @@ static int __init key_enter(void)
 {
     s32 ret;
 
-    printk("key enter\r\n");
+    printk("key enter\n");
 
     //初始化按键是否有效的原子变量
     atomic_set(&key_dev.is_valid, 0);
@@ -113,31 +125,31 @@ static int __init key_enter(void)
     key_dev.key_nd = of_find_node_by_path("/key");
     if (key_dev.key_nd == NULL) {
         ret = -EINVAL;
-        printk("find node failed\r\n");
+        printk("find node failed\n");
         goto fail_find_nd;
     }
 
     //获取gpio句柄
     ret = of_get_named_gpio(key_dev.key_nd, "key-gpios", 0);
     if (ret < 0) {
-        printk("failed to get named key-gpios\r\n");
+        printk("failed to get named key-gpios\n");
         goto fail_named_key_gpio;
     } else {
         key_dev.gpio_nr = ret;
-        printk("key gpio nr = %d\r\n", key_dev.gpio_nr);
+        printk("key gpio nr = %d\n", key_dev.gpio_nr);
     }
 
     //申请gpio(检查该gpio是否冲突)
     ret = gpio_request(key_dev.gpio_nr, "key");
     if (ret) {
-        printk("key pin request failed\r\n");
+        printk("key pin request failed\n");
         goto fail_key_pin_request;
     }
 
     //设置gpio
     ret = gpio_direction_input(key_dev.gpio_nr);
     if (ret) {
-        printk("key pin set failed\r\n");
+        printk("key pin set failed\n");
         goto fail_key_pin_set;
     }
 
@@ -149,21 +161,20 @@ static int __init key_enter(void)
     } else {
         ret = alloc_chrdev_region(&key_dev.devid, 0, 1, "alpha_key");
         key_dev.major = MAJOR(key_dev.devid);
-        key_dev.minor = MINOR(key_dev.devid);
     }
     if (ret < 0) {
-        printk("key devid error\r\n");
+        printk("key devid error\n");
         goto fail_devid;
     }
 
-    printk("key major = %d, minor = %d\r\n", key_dev.major, key_dev.minor);
+    printk("key major = %d, minor = %d\n", MAJOR(key_dev.devid), MINOR(key_dev.devid));
 
     //注册字符设备
     key_dev.cdev.owner = THIS_MODULE;
     cdev_init(&key_dev.cdev, &key_fops);
     ret = cdev_add(&key_dev.cdev, key_dev.devid, 1);
     if (ret < 0) {
-        printk("cdev add failed\r\n");
+        printk("cdev add failed\n");
         goto fail_cdev_add;
     }
 
@@ -171,8 +182,8 @@ static int __init key_enter(void)
     key_dev.class = class_create(THIS_MODULE, "key");  // 在/sys/class会出现key目录
     if (IS_ERR(key_dev.class)) {
         ret = PTR_ERR(key_dev.class);
-        printk("class created failed\r\n");
-		goto fail_class;
+        printk("class created failed\n");
+        goto fail_class;
     }
 
     //在类下面创建设备
@@ -180,7 +191,7 @@ static int __init key_enter(void)
     // 在/dev目录下会出现akey设备节点
     key_dev.device = device_create(key_dev.class, NULL, key_dev.devid, NULL, "akey");
     if (IS_ERR(key_dev.device)) {
-        printk("device created failed\r\n");
+        printk("device created failed\n");
         goto fail_device;
     }
 
@@ -196,13 +207,14 @@ static int __init key_enter(void)
     ret = request_irq(key_dev.key_irq_nr, key_irq_handler,
         IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "key_irq", &key_dev);
     if (ret) {
-        printk("request irq failed\r\n");
+        printk("request irq failed\n");
         goto fail_request_irq;
     }
 
     return 0;
 
 fail_request_irq:
+    device_destroy(key_dev.class, key_dev.devid);
 fail_device:
     class_destroy(key_dev.class);
 fail_class:
@@ -222,7 +234,7 @@ fail_find_nd:
 /* 卸载 */
 static void __exit key_exit(void)
 {
-    printk("key exit\r\n");
+    printk("key exit\n");
 
     //删除软件定时器
     del_timer_sync(&soft_timer);
