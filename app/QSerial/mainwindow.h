@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QTextCodec>
 #include <QDebug>
+#include "config.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,7 +24,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QSerialPort *currentSerialPort;             //当前使用的串口
-    QMap<QString, QSerialPortInfo> serialPorts;          //串口集合
+    QMap<QString, QSerialPortInfo> serialPorts; //串口集合
 
     void mainWindowInit(void);                  //初始化主窗口
     void labelInit(void);                       //初始化label

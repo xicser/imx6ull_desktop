@@ -20,11 +20,14 @@
    <widget class="QPushButton" name="btn_exit">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>740</x>
       <y>0</y>
-      <width>51</width>
-      <height>41</height>
+      <width>61</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="text">
      <string/>
@@ -33,11 +36,23 @@
    <widget class="QTextEdit" name="textEdit_receive">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>651</width>
-      <height>191</height>
+      <x>330</x>
+      <y>250</y>
+      <width>451</width>
+      <height>211</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::WheelFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
     <property name="readOnly">
      <bool>true</bool>
@@ -46,10 +61,10 @@
    <widget class="QLabel" name="label_receive">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>61</width>
-      <height>16</height>
+      <x>330</x>
+      <y>225</y>
+      <width>101</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -59,10 +74,10 @@
    <widget class="QLabel" name="label_title">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>336</x>
       <y>10</y>
-      <width>131</width>
-      <height>16</height>
+      <width>201</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -72,23 +87,32 @@
    <widget class="QTextEdit" name="textEdit_send">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>290</y>
-      <width>651</width>
-      <height>181</height>
+      <x>180</x>
+      <y>60</y>
+      <width>601</width>
+      <height>161</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::WheelFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_send">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>270</y>
-      <width>71</width>
-      <height>16</height>
+      <x>180</x>
+      <y>36</y>
+      <width>101</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -98,113 +122,204 @@
    <widget class="QGroupBox" name="groupBox_port_setting">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>80</y>
-      <width>121</width>
-      <height>241</height>
+      <x>20</x>
+      <y>10</y>
+      <width>141</width>
+      <height>451</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="title">
      <string>串口设置</string>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_port_select">
-       <property name="text">
-        <string>串口选择</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QComboBox" name="comboBox_port_select"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_baud">
-       <property name="text">
-        <string>波特率</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QComboBox" name="comboBox_baud"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_data_bit">
-       <property name="text">
-        <string>数据位</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QComboBox" name="comboBox_data_bit"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_stop_bit">
-       <property name="text">
-        <string>停止位</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="0">
-      <widget class="QComboBox" name="comboBox_stop_bit"/>
-     </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_parity_check">
-       <property name="text">
-        <string>奇偶校验</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="0">
-      <widget class="QComboBox" name="comboBox_parity_check"/>
-     </item>
-    </layout>
+    <widget class="QLabel" name="label_port_select">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>35</y>
+       <width>61</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>串口选择</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_port_select">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_baud">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>125</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>波特率</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_baud">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>150</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_data_bit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>205</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>数据位</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_data_bit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>230</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_stop_bit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>285</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>停止位</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_stop_bit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>310</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_parity_check">
+     <property name="geometry">
+      <rect>
+       <x>22</x>
+       <y>376</y>
+       <width>61</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>奇偶校验</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_parity_check">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>400</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_control">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>330</y>
-      <width>121</width>
-      <height>142</height>
+      <x>180</x>
+      <y>230</y>
+      <width>131</width>
+      <height>231</height>
      </rect>
     </property>
     <property name="title">
      <string>控制</string>
     </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="btn_port_op">
-       <property name="text">
-        <string>打开/关闭</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btn_send">
-       <property name="text">
-        <string>发送数据</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="btn_clear_send">
-       <property name="text">
-        <string>清除发送</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="btn_clear_receive">
-       <property name="text">
-        <string>清除接收</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QPushButton" name="btn_port_op">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>打开/关闭</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_send">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>发送数据</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_clear_send">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>130</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>清除发送</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_clear_receive">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>180</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>清除接收</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>
