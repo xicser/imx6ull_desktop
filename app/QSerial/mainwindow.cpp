@@ -86,8 +86,10 @@ void MainWindow::portInit(void)
         qDebug() << "\n";
 
         serialPorts[serInfo.portName()] = serInfo;
-        ui->comboBox_port_select->addItem(serInfo.portName());
+        // ui->comboBox_port_select->addItem(serInfo.portName());
     }
+    //只使用ttymxc2(uart3), 因为单板上是写死的, 和PC不同
+    ui->comboBox_port_select->addItem("ttymxc2");
 }
 
 /* 初始化label */
@@ -182,18 +184,18 @@ void MainWindow::do_read_port_data_slot(void)
 {
     QByteArray rev_byte_array;
     rev_byte_array = currentSerialPort->readAll();
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    QString rev_str = codec->toUnicode(rev_byte_array);
-    qDebug() << rev_str;
-    ui->textEdit_receive->append(rev_str);
+
+    currentSerialPort->clear(QSerialPort::Input);
+    qDebug() << QString(rev_byte_array);
+    ui->textEdit_receive->append(rev_byte_array);
 }
 
 /* 发送数据按钮槽函数 */
 void MainWindow::do_btn_send_slot(void)
 {
-    QString send_content = QString("123");
+    QString send_content = QString("王熙, 双击666 ！");
     if (currentSerialPort->isOpen() == true) {
-        currentSerialPort->write(send_content.toLocal8Bit());
+        currentSerialPort->write(send_content.toUtf8().data());
     } else {
         QMessageBox::warning(this, "警告", "串口没有打开 !");
     }
@@ -243,7 +245,8 @@ void MainWindow::do_btn_port_op_slot(bool isPressed)
         }
 
         //设置
-        currentSerialPort->setPort(serialPorts[current_port_select]);
+//        currentSerialPort->setPort(serialPorts[current_port_select]);
+        currentSerialPort->setPort(serialPorts["ttymxc2"]);                 //单板上的串口名字是死的
         if (currentSerialPort->open(QIODevice::ReadWrite))
         {
             qDebug() << QString("%1 opened").arg(current_port_select);
@@ -285,7 +288,10 @@ void MainWindow::do_btn_port_op_slot(bool isPressed)
     }
     else
     {
-        qDebug() << "close port";
         currentSerialPort->close();
+
+        //取消连接槽函数(必须要有)
+        disconnect(currentSerialPort, SIGNAL(readyRead()), this, SLOT(do_read_port_data_slot()));
+        qDebug() << "close port";
     }
 }
