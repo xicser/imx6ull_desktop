@@ -18,8 +18,8 @@ typedef struct {
     QColor background;                //背景颜色
     QColor foreground;                //刻度颜色
 
-    int maxValue;                     //刻度表上的最大值
-    int minValue;                     //刻度表上的最小值
+    double maxValue;                     //刻度表上的最大值
+    double minValue;                     //刻度表上的最小值
 
     int startAngle;                   //起始角度(相对于竖直方向)
     int endAngle;                     //终止角度(相对于竖直方向)
@@ -61,8 +61,8 @@ private:
     QColor m_background;                //背景颜色
     QColor m_foreground;                //刻度颜色
 
-    int m_maxValue;                     //刻度表上的最大值
-    int m_minValue;                     //刻度表上的最小值
+    double m_maxValue;                     //刻度表上的最大值
+    double m_minValue;                     //刻度表上的最小值
 
     int m_startAngle;                   //起始角度(相对于竖直方向)
     int m_endAngle;                     //终止角度(相对于竖直方向)

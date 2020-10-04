@@ -86,7 +86,7 @@ void Meter::drawScale(QPainter *painter)
         if (i % m_scaleMinor == 0)    //整数刻度显示加粗
         {
             pen.setWidth(1);          //设置线宽
-            painter->setPen(pen);     //使用面向对象的思想, 把画笔关联上画家。通过画家画出来
+            painter->setPen(pen);     //使用面向对象的思想, 把画笔关联上画家, 通过画家画出来
             painter->drawLine(0, 62, 0, 72); //两个参数应该是两个坐标值
         }
         else
@@ -106,7 +106,7 @@ void Meter::drawScaleNum(QPainter *painter)
     painter->save();
     painter->setPen(m_foreground);
     //m_startAngle是起始角度, m_endAngle是结束角度, m_scaleMajor在一个量程中分成的刻度数
-    double startRad = ( 270-m_startAngle) * (3.14 / 180);
+    double startRad = (270 - m_startAngle) * (3.14 / 180);
     double deltaRad = (360 - m_startAngle - m_endAngle) * (3.14 / 180) / m_scaleMajor;
     double sina,cosa;
     int x, y;
@@ -118,7 +118,6 @@ void Meter::drawScaleNum(QPainter *painter)
     {
         sina = sin(startRad - i * deltaRad);
         cosa = cos(startRad - i * deltaRad);
-
         tmpVal = 1.0 * i *((m_maxValue - m_minValue) / m_scaleMajor) + m_minValue;
         str = QString( "%1" ).arg(tmpVal);              //%1作为占位符arg()函数比起sprintf()来是类型安全的
         w = fm.size(Qt::TextSingleLine,str).width();

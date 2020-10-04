@@ -96,16 +96,16 @@ void MainWindow::meterInit(void)
     //y轴加速度仪表
     init.background = Qt::black;
     init.foreground = Qt::green;
-    init.maxValue = 100;
-    init.minValue = 0;
+    init.maxValue = 2;
+    init.minValue = -2;
     init.value = 0;
-    init.unit = "km/h";
+    init.unit = "g";
     init.scaleMajor = 10;
-    init.scaleMinor = 10;
-    init.precision = 0;
-    init.startAngle = 36;
-    init.endAngle = 36;
-    init.title = "Speed Meter";
+    init.scaleMinor = 5;
+    init.precision = 2;
+    init.startAngle = 30;
+    init.endAngle = 30;
+    init.title = "Y-accel";
     init.size_x = 255;
     init.size_y = 189;
     y_AccelMeter = new Meter(ui->label_accel_y, &init);
@@ -113,20 +113,70 @@ void MainWindow::meterInit(void)
     //z轴加速度仪表
     init.background = Qt::black;
     init.foreground = Qt::green;
-    init.maxValue = 100;
-    init.minValue = 0;
+    init.maxValue = 2;
+    init.minValue = -2;
     init.value = 0;
-    init.unit = "km/h";
+    init.unit = "g";
     init.scaleMajor = 10;
-    init.scaleMinor = 10;
-    init.precision = 0;
-    init.startAngle = 36;
-    init.endAngle = 36;
-    init.title = "Speed Meter";
+    init.scaleMinor = 5;
+    init.precision = 2;
+    init.startAngle = 30;
+    init.endAngle = 30;
+    init.title = "Z-accel";
     init.size_x = 255;
     init.size_y = 189;
     z_AccelMeter = new Meter(ui->label_accel_z, &init);
 
+    //x轴角速度仪表
+    init.background = Qt::black;
+    init.foreground = Qt::green;
+    init.maxValue = 200;
+    init.minValue = -200;
+    init.value = 0;
+    init.unit = "dps";
+    init.scaleMajor = 10;
+    init.scaleMinor = 5;
+    init.precision = 2;
+    init.startAngle = 30;
+    init.endAngle = 30;
+    init.title = "X-gyro";
+    init.size_x = 255;
+    init.size_y = 189;
+    x_GyroMeter = new Meter(ui->label_gyro_x, &init);
+
+    //x轴角速度仪表
+    init.background = Qt::black;
+    init.foreground = Qt::green;
+    init.maxValue = 200;
+    init.minValue = -200;
+    init.value = 0;
+    init.unit = "dps";
+    init.scaleMajor = 10;
+    init.scaleMinor = 5;
+    init.precision = 2;
+    init.startAngle = 30;
+    init.endAngle = 30;
+    init.title = "Y-gyro";
+    init.size_x = 255;
+    init.size_y = 189;
+    y_GyroMeter = new Meter(ui->label_gyro_y, &init);
+
+    //z轴角速度仪表
+    init.background = Qt::black;
+    init.foreground = Qt::green;
+    init.maxValue = 200;
+    init.minValue = -200;
+    init.value = 0;
+    init.unit = "dps";
+    init.scaleMajor = 10;
+    init.scaleMinor = 5;
+    init.precision = 2;
+    init.startAngle = 30;
+    init.endAngle = 30;
+    init.title = "Z-gyro";
+    init.size_x = 255;
+    init.size_y = 189;
+    z_GyroMeter = new Meter(ui->label_gyro_z, &init);
 }
 
 /* 关闭窗口槽函数 */
@@ -138,11 +188,16 @@ void MainWindow::do_btn_exit_slot(void)
 /* 处理icm20608数据槽函数 */
 void MainWindow::do_icm20608_data_slot(Icm20608_Act_Data_t *data)
 {
-    printf("do_icm20608_data_slot ---> gyro(x, y, z) = (%.3f %.3f %.3f),  accel(x, y, z) = (%.3f %.3f %.3f),  temp = (%.3f)\n",
-        data->gyro_x_act, data->gyro_y_act, data->gyro_z_act,
-        data->accel_x_act, data->accel_y_act, data->accel_z_act,
-        data->temp_act);
+//    printf("do_icm20608_data_slot ---> gyro(x, y, z) = (%.3f %.3f %.3f),  accel(x, y, z) = (%.3f %.3f %.3f),  temp = (%.3f)\n",
+//        data->gyro_x_act, data->gyro_y_act, data->gyro_z_act,
+//        data->accel_x_act, data->accel_y_act, data->accel_z_act,
+//        data->temp_act);
 
     x_AccelMeter->setNeedle(data->accel_x_act);
+    y_AccelMeter->setNeedle(data->accel_y_act);
+    z_AccelMeter->setNeedle(data->accel_z_act);
 
+    x_GyroMeter->setNeedle(data->gyro_x_act);
+    y_GyroMeter->setNeedle(data->gyro_y_act);
+    z_GyroMeter->setNeedle(data->gyro_z_act);
 }
