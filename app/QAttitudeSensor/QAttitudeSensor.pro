@@ -17,6 +17,10 @@ SOURCES += main.cpp\
     meter.cpp
 
 HEADERS  += mainwindow.h \
-    meter.h
+    meter.h \
+    config.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resource.qrc

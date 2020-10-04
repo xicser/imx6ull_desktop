@@ -27,24 +27,24 @@ protected:
     void drawNumericValue(QPainter *painter);
 
 private:
-    QColor m_background;
-    QColor m_foreground;
+    QString m_units;                    //计量单位
+    QString m_title;                    //标题
 
-    int m_maxValue;
-    int m_minValue;
-    int m_startAngle;
-    int m_endAngle;
+    QColor m_background;                //背景颜色
+    QColor m_foreground;                //刻度颜色
 
-    int m_scaleMajor;
-    int m_scaleMinor;
-    double m_value;
-    int m_precision;
-    QTimer *m_updateTimer;
-    QString m_units;
-    QString m_title;
+    int m_maxValue;                     //刻度表上的最大值
+    int m_minValue;                     //刻度表上的最小值
 
-private slots:
-    void UpdateAngle();
+    int m_startAngle;                   //起始角度(相对于竖直方向)
+    int m_endAngle;                     //终止角度(相对于竖直方向)
+
+    int m_scaleMajor;                   //大格子的个数
+    int m_scaleMinor;                   //两个大格子之间, 小格子的个数
+
+    double m_value;                     //指针位置
+
+    int m_precision;                    //显示的数字精度(小数点位数)
 };
 
 #endif // METER_H
