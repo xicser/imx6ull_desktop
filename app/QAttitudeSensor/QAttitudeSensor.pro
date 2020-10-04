@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    meter.cpp
+    meter.cpp \
+    icm20608.cpp
 
 HEADERS  += mainwindow.h \
     meter.h \
-    config.h
+    config.h \
+    icm20608.h
 
 FORMS    += mainwindow.ui
 

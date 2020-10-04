@@ -9,12 +9,40 @@
 #include <QTimer>
 #include <complex>
 
+
+//度量表初始化参数列表
+typedef struct {
+    QString unit;                     //计量单位
+    QString title;                    //标题
+
+    QColor background;                //背景颜色
+    QColor foreground;                //刻度颜色
+
+    int maxValue;                     //刻度表上的最大值
+    int minValue;                     //刻度表上的最小值
+
+    int startAngle;                   //起始角度(相对于竖直方向)
+    int endAngle;                     //终止角度(相对于竖直方向)
+
+    int scaleMajor;                   //大格子的个数
+    int scaleMinor;                   //两个大格子之间, 小格子的个数
+
+    double value;                     //指针位置
+
+    int precision;                    //显示的数字精度(小数点位数)
+
+    int size_x, size_y;               //尺寸
+
+} Meter_Init_Param_t;
+
+
 class Meter : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Meter(QWidget *parent = 0);
+    explicit Meter(QWidget *parent = 0, Meter_Init_Param_t *init = 0);
     ~Meter();
+    void setNeedle(double value);       //设置指针位置
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -27,7 +55,7 @@ protected:
     void drawNumericValue(QPainter *painter);
 
 private:
-    QString m_units;                    //计量单位
+    QString m_unit;                     //计量单位
     QString m_title;                    //标题
 
     QColor m_background;                //背景颜色

@@ -1,34 +1,37 @@
 #include "meter.h"
 
-Meter::Meter(QWidget *parent) : QWidget(parent)
+Meter::Meter(QWidget *parent, Meter_Init_Param_t *init) : QWidget(parent)
 {
-    m_background = Qt::black;
-    m_foreground = Qt::green;
-
-    m_startAngle = 36;
-    m_endAngle = 36;
-
-    m_minValue = 0;
-    m_maxValue = 100;
-
-    m_scaleMajor = 10;
-    m_scaleMinor = 10;
-
-    m_units = "km/h";
-    m_title = "Speed Meter";
-
-    m_precision = 2;
-
-    m_value = 0;
+    m_background = init->background;
+    m_foreground = init->foreground;
+    m_startAngle = init->startAngle;
+    m_endAngle = init->endAngle;
+    m_minValue = init->minValue;
+    m_maxValue = init->maxValue;
+    m_scaleMajor = init->scaleMajor;
+    m_scaleMinor = init->scaleMinor;
+    m_unit = init->unit;
+    m_title = init->title;
+    m_precision = init->precision;
+    m_value = init->value;
 
     setWindowFlags(Qt::FramelessWindowHint);     //无窗体
     setAttribute(Qt::WA_TranslucentBackground);  //背景透明
-    resize(256, 256);
+    resize(init->size_x, init->size_y);
 }
 
 Meter::~Meter()
 {
 
+}
+
+/* 设置指针位置 */
+void Meter::setNeedle(double value)
+{
+    if (m_minValue <= value && value <= m_maxValue) {
+        m_value = value;
+        this->update();
+    }
 }
 
 /* 绘图事件 */
@@ -61,7 +64,7 @@ void Meter::drawCrown(QPainter *painter)
     painter->setBrush(lg1);       //创建QBrush对象,把这个渐变对象传递进去：
     painter->setPen(Qt::NoPen);   //边框线无色
     painter->drawEllipse(-radius, -radius, radius << 1, radius << 1);
-    painter->setBrush(m_background = Qt::black);
+    painter->setBrush(m_background);
     painter->drawEllipse(-92, -92, 184, 184);
     painter->restore();
 }
@@ -77,7 +80,7 @@ void Meter::drawScale(QPainter *painter)
     // painter->setPen(m_foreground); //m_foreground是颜色的设置
     // QPen pen = painter->pen();     //第一种方法
     QPen pen;
-    pen.setColor(Qt::green);          //推荐使用第二种方式
+    pen.setColor(m_foreground);       //推荐使用第二种方式
     for (int i = 0; i <= steps; i++)
     {
         if (i % m_scaleMinor == 0)    //整数刻度显示加粗
@@ -142,7 +145,7 @@ void Meter::drawTitle(QPainter *painter)
 /* 绘制显示的数字 */
 void Meter::drawNumericValue(QPainter *painter)
 {
-    QString str = QString("%1 %2").arg(m_value, 0, 'f', m_precision).arg(m_units);
+    QString str = QString("%1 %2").arg(m_value, 0, 'f', m_precision).arg(m_unit);
     QFontMetricsF fm(font());
     double w = fm.size(Qt::TextSingleLine,str).width();
     painter->setPen(m_foreground);
