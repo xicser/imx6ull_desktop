@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //设置开场, 退场动画
     animation = new Animation(this);
-    animation->setGeometry(this->geometry().width() - 48, 0, 48, 48); //设置动画对象的初始位置
-    animation->setAnimationObject(this);                              //设置动画对象(开始动画)
+    animation->setGeometry(this->geometry().width() - 48, 0, 48, 48); //设置Animation的位置
+    animation->setAnimationObject(this);                              //设置动画对象为MainWindow(开始动画)
 }
 
 MainWindow::~MainWindow()
