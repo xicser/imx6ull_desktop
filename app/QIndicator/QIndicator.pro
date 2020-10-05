@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     indicator.cpp \
-    key.cpp
+    key.cpp \
+    animation.cpp
 
 HEADERS  += mainwindow.h \
     indicator.h \
     config.h \
-    key.h
+    key.h \
+    animation.h
 
 FORMS    += mainwindow.ui
 

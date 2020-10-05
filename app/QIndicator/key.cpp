@@ -38,7 +38,7 @@ void Key::run(void)
     while (1) {
         poll_ret = poll(&pfd, 1, 5000);
         if(poll_ret == 0) {
-            qDebug() << "time out(%d)\n";
+            // qDebug() << "time out(%d)\n";
         } else if (poll_ret < 0) {
             qDebug() << "poll err(%d)\n";
         } else {

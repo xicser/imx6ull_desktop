@@ -9,7 +9,7 @@ class Key : public QThread
     Q_OBJECT
 public:
     explicit Key(QThread *parent = 0);
-    Key::~Key();
+    ~Key();
 
 signals:
     void key_press_signal(u8 key_status);         //按钮信号

@@ -26,6 +26,11 @@ MainWindow::MainWindow(QWidget *parent) :
     buttonInit();
     labelInit();
     timerInit();
+
+    //设置开场, 退场动画
+    animation = new Animation(this);
+    animation->setGeometry(this->geometry().width() - 48, 0, 48, 48); //设置动画对象的初始位置
+    animation->setAnimationObject(this);                              //设置动画对象(开始动画)
 }
 
 MainWindow::~MainWindow()
@@ -39,8 +44,6 @@ MainWindow::~MainWindow()
 void MainWindow::mainWindowtInit(void)
 {
     //设置窗口位置
-//    this->setGeometry(0, 0, QApplication::desktop()->screenGeometry().width(),
-//                      QApplication::desktop()->screenGeometry().height());
     this->setGeometry(0, 0, SCREEN_X_SIZE, SCREEN_Y_SIZE);
 
     //设置窗口位无边框
@@ -106,16 +109,9 @@ void MainWindow::buttonInit(void)
     bg_beep->addButton(ui->radioButton_beep_on);
     bg_beep->addButton(ui->radioButton_beep_blink);
 
-    //退出按钮
-    ui->btn_exit->setStyleSheet("QPushButton {border-image:url(:/icon/Resource/icon/menu.png);}"
-                                "QPushButton:hover{border-image:url(:/icon/Resource/icon/menu_clicked.png);}"
-                                "QPushButton:pressed{border-image:url(:/icon/Resource/icon/menu.png);}");
-    ui->btn_exit->setFocusPolicy(Qt::NoFocus);
-
     //槽
     connect(bg_led, SIGNAL(buttonClicked(int)), this, SLOT(do_led_slot(int)));
     connect(bg_beep, SIGNAL(buttonClicked(int)), this, SLOT(do_beep_slot(int)));
-    connect(ui->btn_exit, &QPushButton::clicked, this, &MainWindow::do_btn_exit_slot);
 }
 
 /* 标签初始化 */
@@ -242,12 +238,6 @@ void MainWindow::do_beep_slot(int id)
         }
         default: break;
     }
-}
-
-/* 退出按钮槽函数 */
-void MainWindow::do_btn_exit_slot(void)
-{
-    this->close();
 }
 
 /* 处理按键信号的槽 */
