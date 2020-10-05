@@ -17,18 +17,23 @@ Key::Key(QThread *parent) : QThread(parent)
 
 }
 
+Key::~Key()
+{
+    close(fd);
+}
+
 void Key::run(void)
 {
-    s32 fd_key, poll_ret;
+    s32 poll_ret;
     u8 key_val;
     struct pollfd pfd;
 
-    fd_key = open("/dev/akey", O_RDWR | O_NONBLOCK);
-    if (fd_key < 0) {
+    fd = open("/dev/akey", O_RDWR | O_NONBLOCK);
+    if (fd < 0) {
         qDebug() << "key can't open!\n";
     }
 
-    pfd.fd = fd_key;
+    pfd.fd = fd;
     pfd.events = POLLIN;
     while (1) {
         poll_ret = poll(&pfd, 1, 5000);
@@ -38,11 +43,9 @@ void Key::run(void)
             qDebug() << "poll err(%d)\n";
         } else {
             if (pfd.revents | POLLIN) {
-                read(fd_key, &key_val, 1);
+                read(fd, &key_val, 1);
                 emit key_press_signal(key_val);  //发射信号(按键值)
             }
         }
     }
-
-    close(fd_key);
 }
