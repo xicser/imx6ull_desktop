@@ -13,6 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     comboBoxInit();                      //初始化comboBox
     portInit();                          //初始化串口
     btnInit();                           //按钮初始化
+
+    //设置开场, 退场动画
+    animation = new Animation(this);
+    animation->setGeometry(this->geometry().width() - 48, 0, 48, 48); //设置Animation的位置
+    animation->setAnimationObject(this);                              //设置动画对象为MainWindow(开始动画)
 }
 
 MainWindow::~MainWindow()
@@ -168,13 +173,9 @@ void MainWindow::textPlainInit(void)
 /* 按钮初始化 */
 void MainWindow::btnInit(void)
 {
-    //exit
-    ui->btn_exit->setStyleSheet(BUTTON_EXIT);
-
     //槽
     connect(ui->btn_port_op, &QPushButton::clicked, this, &MainWindow::do_btn_port_op_slot);             //串口操作(打开, 关闭)
     connect(ui->btn_send, &QPushButton::clicked, this, &MainWindow::do_btn_send_slot);                   //发送数据
-    connect(ui->btn_exit, &QPushButton::clicked, this, &MainWindow::do_btn_exit_slot);                   //退出
     connect(ui->btn_clear_receive, &QPushButton::clicked, this, &MainWindow::do_btn_clear_receive_slot); //清除接收
     connect(ui->btn_clear_send, &QPushButton::clicked, this, &MainWindow::do_btn_clear_send_slot);       //清除发送
 }
@@ -199,12 +200,6 @@ void MainWindow::do_btn_send_slot(void)
     } else {
         QMessageBox::warning(this, "警告", "串口没有打开 !");
     }
-}
-
-/* 关闭窗口槽函数 */
-void MainWindow::do_btn_exit_slot(void)
-{
-    this->close();
 }
 
 /* 清除接收数据槽函数 */

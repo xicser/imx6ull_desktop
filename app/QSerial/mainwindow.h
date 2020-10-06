@@ -8,6 +8,7 @@
 #include <QTextCodec>
 #include <QDebug>
 #include "config.h"
+#include "animation.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Animation *animation;                       //进场, 退场动画
     QSerialPort *currentSerialPort;             //当前使用的串口
     QMap<QString, QSerialPortInfo> serialPorts; //串口集合
 
@@ -35,7 +37,6 @@ private:
 
 private slots:
     void do_read_port_data_slot(void);          //读取数据槽函数
-    void do_btn_exit_slot(void);                //关闭窗口槽函数
     void do_btn_send_slot(void);                //发送数据按钮槽函数
     void do_btn_clear_receive_slot(void);       //清除接收数据槽函数
     void do_btn_clear_send_slot(void);          //清除发送数据槽函数
