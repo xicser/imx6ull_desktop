@@ -122,22 +122,6 @@
      <string>三轴角速度（x, y, z）：</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_exit">
-    <property name="geometry">
-     <rect>
-      <x>744</x>
-      <y>0</y>
-      <width>61</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="focusPolicy">
-     <enum>Qt::NoFocus</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

@@ -5,6 +5,7 @@
 #include "meter.h"
 #include "config.h"
 #include "icm20608.h"
+#include "animation.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Animation *animation;            //进场, 退场动画
 
     Icm20608 *icm20608;              //icm20608
 
@@ -33,11 +35,9 @@ private:
 
     void mainWindowInit(void);       //初始化主窗口
     void labelInit(void);            //初始化label
-    void btnInit(void);              //按钮初始化
     void meterInit(void);            //仪表初始化
 
 private slots:
-    void do_btn_exit_slot(void);       //关闭窗口槽函数
     void do_icm20608_data_slot(Icm20608_Act_Data_t *data);  //处理icm20608数据槽函数
 };
 

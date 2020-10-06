@@ -9,12 +9,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mainWindowInit();
     labelInit();
-    btnInit();
     meterInit();
 
     icm20608 = new Icm20608();
     connect(icm20608, &Icm20608::icm20608_data_signal, this, &MainWindow::do_icm20608_data_slot); //绑定槽
     icm20608->start();
+
+    //设置开场, 退场动画
+    animation = new Animation(this);
+    animation->setGeometry(this->geometry().width() - 48, 0, 48, 48); //设置Animation的位置
+    animation->setAnimationObject(this);                              //设置动画对象为MainWindow(开始动画)
 }
 
 MainWindow::~MainWindow()
@@ -28,8 +32,6 @@ MainWindow::~MainWindow()
 void MainWindow::mainWindowInit(void)
 {
     //设置窗口位置
-//    this->setGeometry(0, 0, QApplication::desktop()->screenGeometry().width(),
-//                      QApplication::desktop()->screenGeometry().height());
     this->setGeometry(0, 0, SCREEN_X_SIZE, SCREEN_Y_SIZE);
 
     //设置窗口位无边框
@@ -61,14 +63,6 @@ void MainWindow::labelInit(void)
     ui->label_gyro->setStyleSheet("QLabel {color: white}");
     ui->label_gyro->setFont(font);
     ui->label_gyro->setAlignment(Qt::AlignLeft);
-}
-
-/* 按钮初始化 */
-void MainWindow::btnInit(void)
-{
-    //exit
-    ui->btn_exit->setStyleSheet(BUTTON_EXIT);
-    connect(ui->btn_exit, &QPushButton::clicked, this, &MainWindow::do_btn_exit_slot);                   //退出
 }
 
 /* 仪表初始化 */
@@ -177,12 +171,6 @@ void MainWindow::meterInit(void)
     init.size_x = 255;
     init.size_y = 189;
     z_GyroMeter = new Meter(ui->label_gyro_z, &init);
-}
-
-/* 关闭窗口槽函数 */
-void MainWindow::do_btn_exit_slot(void)
-{
-    this->close();
 }
 
 /* 处理icm20608数据槽函数 */

@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     meter.cpp \
-    icm20608.cpp
+    icm20608.cpp \
+    animation.cpp
 
 HEADERS  += mainwindow.h \
     meter.h \
     config.h \
-    icm20608.h
+    icm20608.h \
+    animation.h
 
 FORMS    += mainwindow.ui
 
